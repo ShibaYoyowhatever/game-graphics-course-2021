@@ -3,7 +3,7 @@
 import PicoGL from "../node_modules/picogl/build/module/picogl.js";
 import {mat4, vec3, mat3, vec4, vec2} from "../node_modules/gl-matrix/esm/index.js";
 
-import {positions, normals, indices} from "../blender/cube.js"
+import {positions, normals, indices} from "../blender/monkey.js"
 import {positions as mirrorPositions, uvs as mirrorUvs, indices as mirrorIndices} from "../blender/plane.js"
 
 let skyboxPositions = new Float32Array([
@@ -34,10 +34,10 @@ let fragmentShader = `
     void main()
     {        
         vec3 reflectedDir = reflect(viewDir, normalize(vNormal));
-        outColor = texture(cubemap, reflectedDir);
+        //outColor = texture(cubemap, reflectedDir);
         
         // Try using a higher mipmap LOD to get a rough material effect without any performance impact
-        //outColor = textureLod(cubemap, reflectedDir, 7.0);
+        outColor = textureLod(cubemap, reflectedDir, 4.0);
     }
 `;
 
@@ -158,7 +158,7 @@ let mirrorArray = app.createVertexArray()
     .indexBuffer(app.createIndexBuffer(PicoGL.UNSIGNED_INT, 3, mirrorIndices));
 
 // Change the reflection texture resolution to checkout the difference
-let reflectionResolutionFactor = 0.3;
+let reflectionResolutionFactor = 0.6;
 let reflectionColorTarget = app.createTexture2D(app.width * reflectionResolutionFactor, app.height * reflectionResolutionFactor, {magFilter: PicoGL.LINEAR});
 let reflectionDepthTarget = app.createTexture2D(app.width * reflectionResolutionFactor, app.height * reflectionResolutionFactor, {internalFormat: PicoGL.DEPTH_COMPONENT16});
 let reflectionBuffer = app.createFramebuffer().colorTarget(0, reflectionColorTarget).depthTarget(reflectionDepthTarget);
@@ -211,12 +211,12 @@ async function loadTexture(fileName) {
 
 (async () => {
     const cubemap = app.createCubemap({
-        negX: await loadTexture("stormydays_bk.png"),
-        posX: await loadTexture("stormydays_ft.png"),
-        negY: await loadTexture("stormydays_dn.png"),
-        posY: await loadTexture("stormydays_up.png"),
-        negZ: await loadTexture("stormydays_lf.png"),
-        posZ: await loadTexture("stormydays_rt.png")
+        negX: await loadTexture("moonl1.png"),
+        posX: await loadTexture("moonr2.png"),
+        negY: await loadTexture("moonl2down.png"),
+        posY: await loadTexture("moonl2up.png"),
+        negZ: await loadTexture("moonr1.png"),
+        posZ: await loadTexture("moonl2m.png")
     });
 
     let drawCall = app.createDrawCall(program, vertexArray)

@@ -72,7 +72,7 @@ let shadowFragmentShader = `
     
     void main() {
         // Uncomment to see the depth buffer of the shadow map    
-        //fragColor = vec4((gl_FragCoord.z - 0.98) * 50.0);    
+        fragColor = vec4((gl_FragCoord.z - 0.98) * 50.0);    
     }
 `;
 
@@ -103,7 +103,7 @@ let vertexArray = app.createVertexArray()
     .indexBuffer(app.createIndexBuffer(PicoGL.UNSIGNED_INT, 3, indices));
 
 // Change the shadow texture resolution to checkout the difference
-let shadowDepthTarget = app.createTexture2D(512, 512, {
+let shadowDepthTarget = app.createTexture2D(200, 200, {
     internalFormat: PicoGL.DEPTH_COMPONENT16,
     compareMode: PicoGL.COMPARE_REF_TO_TEXTURE,
     magFilter: PicoGL.LINEAR,

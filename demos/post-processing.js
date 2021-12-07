@@ -108,13 +108,13 @@ let postFragmentShader = `
         col = depthOfField(col, depth, v_position.xy);
 
         // Noise         
-        col.rgb += (2.0 - col.rgb) * random(v_position.xy) * 0.1;
+        //col.rgb += (2.0 - col.rgb) * random(v_position.xy) * 0.1;
         
         // Contrast + Brightness
-        col = pow(col, vec4(1.8)) * 0.8;
+        col = pow(col, vec4(1.5)) * 4.0;
         
         // Color curves
-        col.rgb = col.rgb * vec3(1.2, 1.1, 1.0) + vec3(0.0, 0.05, 0.2);
+        col.rgb = col.rgb * vec3(1.2, 1.1, 1.0) + vec3(0.3, 0.2, 0.5);
         
         // Ambient Occlusion
         //col = ambientOcclusion(col, depth, v_position.xy);                
@@ -123,7 +123,7 @@ let postFragmentShader = `
         //col.rgb = 1.0 - col.rgb;
         
         // Fog
-        //col.rgb = col.rgb + vec3((depth - 0.992) * 200.0);         
+        col.rgb = col.rgb + vec3((depth - 0.992) * 50.0);         
                         
         outColor = col;
     }
